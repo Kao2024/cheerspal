@@ -103,7 +103,7 @@
                     <div class="col-md-6 col-lg-5 col-xl-4">
                         <p>Please login to your account.</p>
                         <!-- Login Form -->
-                        <form th:action="@{/login}" method="post" th:object="${user}" data-sb-form-api-token="API_TOKEN">
+                        <form th:action="@{/login}" method="post" th:object="${user}" onsubmit="return validateForm()">
                             <!-- Email -->
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Enter your email..." data-sb-validations="required,email" required />
@@ -158,7 +158,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Cheers Pal 2024. Connecting people, creating memories</div>
                     </div>
                 </div>
             </div>

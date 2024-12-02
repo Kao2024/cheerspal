@@ -29,7 +29,12 @@ public class LoginController {
             session.setAttribute("loggedInUser", existingUser);
             session.setAttribute("loggedIn", true);
             model.addAttribute("user", existingUser);
-            return "redirect:/";
+                        
+            if ("ADMIN".equals(existingUser.getRole())) {
+                return "redirect:/admin";
+            } else {
+                return "redirect:/";
+            }
         } else {
             model.addAttribute("error", "Invalid email or password!");
             return "login";

@@ -48,5 +48,10 @@ public class EventController {
         return "Index";
     }
     
+    @GetMapping("/delete/{id}")
+    public String deleteEvent(@PathVariable("id") Long eventId) {
+        eventService.deleteEvent(eventId);
+        return "redirect:/admin";
+    }
     
 }

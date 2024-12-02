@@ -12,24 +12,23 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- * @author Kiki
- */
 @Entity
 public class User {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private String password;
     private String gender;
     private String email;
     private LocalDate birthday;
+    private String role;
     @Column(name = "terms")
-    private boolean terms;    
+    private boolean terms;
     @Column(name = "self_introduction")
     private String selfIntroduction;
+
     @ManyToMany
     @JoinTable(
         name = "event_user",
@@ -109,5 +108,13 @@ public class User {
 
     public void setTerms(boolean terms) {
         this.terms = terms;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

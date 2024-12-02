@@ -82,43 +82,89 @@
                 </div>
             </div>
         </header>
-         <!-- Main Content-->
-            <script async src="https://cse.google.com/cse.js?cx=359179be3972f42df"></script>
+        <!-- Main Content-->
+        <script async src="https://cse.google.com/cse.js?cx=359179be3972f42df"></script>
             <div class="gcse-search"></div>
-            <div>
-                <p th:if="${session.loggedInUser != null}" >
-                    Hello, <span th:text="${session.loggedInUser.name ?: 'Guest'}"></span>!
-                </p>
+        <div>
+            <p th:if="${session.loggedInUser != null}" >
+                Hello, <span th:text="${session.loggedInUser.name ?: 'Guest'}"></span>!
+            </p>
+        </div>
+        <div th:if="${session.loggedInUser == null}">
+            <p>Please <a href="/login">login</a> to continue.</p>
+        </div>
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <!-- Create Event Form -->
+                    <div class="post-preview">
+                        <h2 class="post-title">Create an Event</h2>
+                        <form th:action="@{/post_event}" method="post" th:object="${event}">
+                            <input type="hidden" name="userId" th:value="${session.loggedInUser.id}">
+                            
+                            <div class="form-floating mb-3">
+                                <label for="title">Event Title</label>
+                                <input type="text" id="title" th:field="*{title}" class="form-control" required>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <label for="description">Event Description</label>
+                                <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <label for="date">Event Date</label>
+                                <input type="date" id="date" th:field="*{date}" class="form-control" required>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" placeholder="City" class="form-control" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary text-uppercase">Post Event</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div th:if="${session.loggedInUser == null}">
-                <p>Please <a href="/login">login</a> to continue.</p>
+        </div>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Cheers Pal 2024. Connecting people, creating memories</div>
+                    </div>
+                </div>
             </div>
-            <h1>Create an Event</h1>
-
-            <form th:action="@{/post_event}" method="post" th:object="${event}">
-                <input type="hidden" name="userId" th:value="${session.loggedInUser.id}">
-                <div class="form-group">
-                    <label for="title">Event Title</label>
-                    <input type="text" id="title" th:field="*{title}" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Event Description</label>
-                    <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="date">Event Date</label>
-                    <input type="date" id="date" th:field="*{date}" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city" placeholder="City" class="form-control" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Post Event</button>
-            </form>
+        </footer>
 
     </body>
+    
 </html>

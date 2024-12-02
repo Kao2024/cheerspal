@@ -1,5 +1,6 @@
 package project.cheerspal.service;
 
+import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.cheerspal.Event;
@@ -33,8 +34,11 @@ public class EventService {
     }
     
     public List<Event> getAllEvents() {
-        return (List<Event>) eventRepository.findAll();
+        List<Event> events = (List<Event>) eventRepository.findAll();
+        events.sort(Comparator.comparing(Event::getDate));
+        return events;
     }
+
 
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found")); 

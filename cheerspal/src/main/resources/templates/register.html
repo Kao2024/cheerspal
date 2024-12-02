@@ -94,7 +94,7 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <p>Please fill out the form below to register.</p>
                     <div class="my-5">
-                        <form action="#" th:action="@{/register}" th:object="${user}" method="post" data-sb-form-api-token="API_TOKEN">
+                        <form action="#" th:action="@{/register}" th:object="${user}" method="post" onsubmit="return validateForm()">
                             <!-- Username -->
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="username" type="text" th:field="*{name}" placeholder="Enter your name..." data-sb-validations="required" />
@@ -188,7 +188,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Cheers Pal 2024. Connecting people, creating memories</div>
                     </div>
                 </div>
             </div>

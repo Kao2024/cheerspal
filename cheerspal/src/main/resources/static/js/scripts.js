@@ -26,4 +26,39 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         scrollPos = currentTop;
     });
-})
+});
+
+function validateForm() {
+    let valid = true;
+
+    document.querySelectorAll('.is-invalid').forEach((el) => {
+        el.classList.remove('is-invalid');
+    });
+
+    const name = document.getElementById('name');
+    if (!name.value.trim()) {
+        name.classList.add('is-invalid');
+        valid = false;
+    }
+
+    const email = document.getElementById('email');
+    if (!email.value.trim() || !email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        email.classList.add('is-invalid');
+        valid = false;
+    }
+
+    const phone = document.getElementById('phone');
+    if (!phone.value.trim()) {
+        phone.classList.add('is-invalid');
+        valid = false;
+    }
+
+    const message = document.getElementById('message');
+    if (!message.value.trim()) {
+        message.classList.add('is-invalid');
+        valid = false;
+    }
+
+    return valid;
+}
+

@@ -7,8 +7,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Event {
@@ -26,8 +27,16 @@ public class Event {
     private User host;
 
     @ManyToMany(mappedBy = "events")
-    private List<User> attendees = new ArrayList<>();
+    private Set<User> attendees = new HashSet<>();
 
+    public Set<User> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<User> attendees) {
+        this.attendees = attendees;
+    }
+    
     public String getWeather() {
         return weather;
     }
@@ -50,14 +59,6 @@ public class Event {
 
     public void setHost(User host) {
         this.host = host;
-    }
-        
-    public List<User> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(List<User> attendees) {
-        this.attendees = attendees;
     }
 
     public Long getId() {

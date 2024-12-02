@@ -20,67 +20,67 @@
         <script src="/js/scripts.js"></script>
         <title>Cheers Pal - Post</title>
     </head>
-<body>
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="Index">Cheers Pal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="Index">Cheers Pal</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
 
-                <ul class="navbar-nav ms-auto py-4 py-lg-0">                    
-                    <!-- Log out link (visible when logged in) -->
-                        <li class="nav-item" th:if="${session.loggedIn}">
-                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login/logout">
-                                <i class="bi bi-box-arrow-right"></i> Log out
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">                    
+                        <!-- Log out link (visible when logged in) -->
+                            <li class="nav-item" th:if="${session.loggedIn}">
+                                <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login/logout">
+                                    <i class="bi bi-box-arrow-right"></i> Log out
+                                </a>
+                            </li>
+                        <!-- Log in link (visible when not logged in) -->
+                        <li class="nav-item" th:unless="${session.loggedIn}">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">
+                                <i class="bi bi-box-arrow-in-right"></i> Log in
                             </a>
                         </li>
-                    <!-- Log in link (visible when not logged in) -->
-                    <li class="nav-item" th:unless="${session.loggedIn}">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">
-                            <i class="bi bi-box-arrow-in-right"></i> Log in
-                        </a>
-                    </li>
-                    <!-- Sign Up (always visible) -->
-                    <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
-                            <i class="bi bi-person-fill-add"></i> Sign Up
-                        </a>
-                    </li>
-                    <!-- Post Event (redirect to login when logged out) -->
-                    <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" 
-                           th:href="${session.loggedIn} ? '/post_event' : '/login'">
-                            <i class="bi bi-card-list"></i> Post
-                        </a>
-                    </li>
-                    <!-- Contact (always visible) -->
-                    <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/contact">
-                            <i class="bi bi-headset"></i> Contact
-                        </a>
-                    </li>
-                </ul>
-            </div>            
-        </div>
-    </nav>
-    <!-- Page Header-->
-   <header class="masthead" th:style="|background-image: url('@{/img/home-bg.jpg}')|">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h1>Don't Miss Out, Join the Fun!</h1>
-                        <span class="subheading">Sign up now and be part of something amazing!</span>
+                        <!-- Sign Up (always visible) -->
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
+                                <i class="bi bi-person-fill-add"></i> Sign Up
+                            </a>
+                        </li>
+                        <!-- Post Event (redirect to login when logged out) -->
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" 
+                               th:href="${session.loggedIn} ? '/post_event' : '/login'">
+                                <i class="bi bi-card-list"></i> Post
+                            </a>
+                        </li>
+                        <!-- Contact (always visible) -->
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/contact">
+                                <i class="bi bi-headset"></i> Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>            
+            </div>
+        </nav>
+        <!-- Page Header-->
+       <header class="masthead" th:style="|background-image: url('@{/img/home-bg.jpg}')|">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Don't Miss Out, Join the Fun!</h1>
+                            <span class="subheading">Sign up now and be part of something amazing!</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!-- Main Content-->
+        </header>
+        <!-- Main Content-->
         <script async src="https://cse.google.com/cse.js?cx=359179be3972f42df"></script>
         <div class="gcse-search"></div>
         <div>
@@ -90,21 +90,76 @@
         </div>
         <div th:if="${session.loggedInUser == null}">
             <p>Please <a href="/login">login</a> to continue.</p>
-        </div>
-    
-        <div class="card">
-            <div class="card-body">
-                <h1 class="card-title" th:text="${event.title}"></h1>
-                <p class="card-text">Description: <span th:text="${event.description}"></span></p>
-                <p class="card-text">Hosted by: <span th:text="${event.host != null ? event.host.name : 'Unknown'}"></span></p>
-                <p class="card-text">Event Time: <span th:text="${event.date}"></span></p>
-                <p class="card-text">Weather Forecast: <span th:text="${event.weather != null ? event.weather : 'Not available'}"></span></p>
-                <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
-                    <input type="hidden" name="userId" th:value="${userId}">
-                    <button type="submit" class="btn btn-success">Join Event</button>
-                </form>
-                
+        </div>        
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Event Details Card -->
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <h1 class="card-title" th:text="${event.title}">Event Title</h1>
+                        <p class="card-text">
+                            <strong>Description:</strong> 
+                            <span th:text="${event.description}">Event description goes here.</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Hosted by:</strong> 
+                            <span th:text="${event.host != null ? event.host.name : 'Unknown'}">Host name</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Event Time:</strong> 
+                            <span th:text="${event.date}">Event time goes here</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Weather Forecast:</strong> 
+                            <span th:text="${event.weather != null ? event.weather : 'Not available'}">Weather info</span>
+                        </p>
+
+                        <!-- Join Event Button -->
+                        <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
+                            <input type="hidden" name="userId" th:value="${userId}">
+                            <button type="submit" class="btn btn-primary">Join Event</button> <!-- Changed to btn-primary -->
+                        </form>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Cheers Pal 2024. Connecting people, creating memories</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
