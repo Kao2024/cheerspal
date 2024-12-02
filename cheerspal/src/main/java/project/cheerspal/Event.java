@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,39 @@ public class Event {
     private String title;
     private String description;
     private LocalDate date;
+    private String city;
+    private String weather;
+    
+    @ManyToOne
+    private User host;
+
     @ManyToMany(mappedBy = "events")
     private List<User> attendees = new ArrayList<>();
 
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public User getHost() {
+        return host;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
+        
     public List<User> getAttendees() {
         return attendees;
     }

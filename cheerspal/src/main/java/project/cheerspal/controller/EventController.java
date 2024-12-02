@@ -11,6 +11,7 @@ import project.cheerspal.Event;
 import project.cheerspal.service.EventService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -27,11 +28,12 @@ public class EventController {
     }
 
     @PostMapping
-    public String postEvent(@ModelAttribute("event") Event event) {
-        eventService.createEvent(event); 
-        return "redirect:/post_event/event_details?id=" + event.getId(); // Include the event ID in the redirect
+    public String postEvent(@ModelAttribute Event event, @RequestParam Integer userId, @RequestParam String city) {
+        event.setCity(city);
+        eventService.createEvent(event, userId);
+        return "redirect:/post_event/event_details?id=" + event.getId();
     }
-
+    
     @GetMapping("/event_details")
     public String showEventDetails(@RequestParam("id") Long eventId, Model model) {
         Event event = eventService.getEventById(eventId);
@@ -45,4 +47,6 @@ public class EventController {
         model.addAttribute("events", events);
         return "Index";
     }
+    
+    
 }

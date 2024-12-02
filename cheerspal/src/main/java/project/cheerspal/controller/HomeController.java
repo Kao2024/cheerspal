@@ -21,7 +21,7 @@ public class HomeController {
 
     @GetMapping({"/", "/Index"})
     public String indexPage(Model model) {
-        List<Event> events = (List<Event>) eventRepository.findAll();
+        List<Event> events = (List<Event>) eventRepository.findAllByOrderByDateAsc();
         model.addAttribute("events", events);
         return "Index";
     }

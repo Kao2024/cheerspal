@@ -17,11 +17,21 @@ public class EventService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private WeatherService weatherService;
 
-    public Event createEvent(Event event) {
+    public Event createEvent(Event event, Integer userId) {
+        User host = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        event.setHost(host);
+        String weather = weatherService.getWeather(event.getCity(), event.getDate());
+        event.setWeather(weather);
+
         return eventRepository.save(event); 
     }
-
+    
     public List<Event> getAllEvents() {
         return (List<Event>) eventRepository.findAll();
     }
@@ -42,20 +52,4 @@ public class EventService {
         throw new RuntimeException("Event not found");
     }
 
-    public void addAttendee(Long eventId, Integer userId) {
-        Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new RuntimeException("Event not found"));
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!event.getAttendees().contains(user)) {
-            event.getAttendees().add(user);
-        }
-
-        if (!user.getEvents().contains(event)) {
-            user.getEvents().add(event);
-        }
-
-        eventRepository.save(event);
-    }
 }

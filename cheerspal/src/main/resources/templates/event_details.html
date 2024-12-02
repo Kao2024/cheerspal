@@ -17,7 +17,7 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="/js/scripts.js"></script>
         <title>Cheers Pal - Post</title>
     </head>
 <body>
@@ -31,20 +31,40 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
 
-                <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/index">
-                        <i class="bi bi-person-fill-add"></i> Log out</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
-                        <i class="bi bi-person-fill-add"></i> Sign Up</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/post_event">
-                        <i class="bi bi-card-list"></i> Post</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/contact">
-                        <i class="bi bi-headset"></i> Contact</a></li>
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">                    
+                    <!-- Log out link (visible when logged in) -->
+                        <li class="nav-item" th:if="${session.loggedIn}">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login/logout">
+                                <i class="bi bi-box-arrow-right"></i> Log out
+                            </a>
+                        </li>
+                    <!-- Log in link (visible when not logged in) -->
+                    <li class="nav-item" th:unless="${session.loggedIn}">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">
+                            <i class="bi bi-box-arrow-in-right"></i> Log in
+                        </a>
+                    </li>
+                    <!-- Sign Up (always visible) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
+                            <i class="bi bi-person-fill-add"></i> Sign Up
+                        </a>
+                    </li>
+                    <!-- Post Event (redirect to login when logged out) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" 
+                           th:href="${session.loggedIn} ? '/post_event' : '/login'">
+                            <i class="bi bi-card-list"></i> Post
+                        </a>
+                    </li>
+                    <!-- Contact (always visible) -->
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/contact">
+                            <i class="bi bi-headset"></i> Contact
+                        </a>
+                    </li>
                 </ul>
-
-            </div>
-            
+            </div>            
         </div>
     </nav>
     <!-- Page Header-->
@@ -72,13 +92,19 @@
             <p>Please <a href="/login">login</a> to continue.</p>
         </div>
     
-        <h1 th:text="${event.title}"></h1>
-            <p>Description: <span th:text="${event.description}"></span></p>
-            <p>Event Time: <span th:text="${event.date}"></span></p>
-
-            <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
-                <input type="hidden" name="userId" th:value="${userId}">
-                <button type="submit">Join Event</button>
-            </form>
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title" th:text="${event.title}"></h1>
+                <p class="card-text">Description: <span th:text="${event.description}"></span></p>
+                <p class="card-text">Hosted by: <span th:text="${event.host != null ? event.host.name : 'Unknown'}"></span></p>
+                <p class="card-text">Event Time: <span th:text="${event.date}"></span></p>
+                <p class="card-text">Weather Forecast: <span th:text="${event.weather != null ? event.weather : 'Not available'}"></span></p>
+                <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
+                    <input type="hidden" name="userId" th:value="${userId}">
+                    <button type="submit" class="btn btn-success">Join Event</button>
+                </form>
+                
+            </div>
+        </div>
     </body>
 </html>

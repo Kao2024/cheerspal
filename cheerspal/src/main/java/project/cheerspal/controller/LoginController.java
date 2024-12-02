@@ -4,18 +4,10 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import project.cheerspal.User;
-import project.cheerspal.UserRepository;
 import project.cheerspal.service.LoginService;
 
-/**
- *
- * @author Kiki
- */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -35,20 +27,15 @@ public class LoginController {
 
         if (existingUser != null) {
             session.setAttribute("loggedInUser", existingUser);
+            session.setAttribute("loggedIn", true);
             model.addAttribute("user", existingUser);
-            return "login_success";
+            return "redirect:/";
         } else {
             model.addAttribute("error", "Invalid email or password!");
             return "login";
         }
     }
 
-    @GetMapping("/login_success")
-    public String showLoginSuccess(Model model, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        model.addAttribute("user", loggedInUser);
-        return "login_success";
-    }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
