@@ -28,6 +28,10 @@ public class EventService {
 
         event.setHost(host);
         String weather = weatherService.getWeather(event.getCity(), event.getDate());
+        
+        if (weather == null) {
+            throw new RuntimeException("Weather service returned null");
+        }
         event.setWeather(weather);
 
         return eventRepository.save(event); 
@@ -39,7 +43,6 @@ public class EventService {
         return events;
     }
 
-
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found")); 
     }
@@ -48,12 +51,15 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    public Event updateEvent(Long id, Event updatedEvent) {
-        if (eventRepository.existsById(id)) {
-            updatedEvent.setId(id);
-            return eventRepository.save(updatedEvent);
-        }
-        throw new RuntimeException("Event not found");
-    }
+    public void addParticipantToEvent(Long eventId, Integer userId) {
+       Event event = eventRepository.findById(eventId)
+               .orElseThrow(() -> new RuntimeException("Event not found"));
+
+       User user = userRepository.findById(userId)
+               .orElseThrow(() -> new RuntimeException("User not found"));
+
+       event.addParticipant(user);
+       eventRepository.save(event);
+   } 
 
 }

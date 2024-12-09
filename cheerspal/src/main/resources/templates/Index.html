@@ -62,12 +62,20 @@
                             </a>
                         </li>
 
-                        <!-- Contact (always visible) -->
-                        <li class="nav-item">
+                        <!-- Contact (for user) -->
+                        <li class="nav-item" th:unless="${isAdmin}">
                             <a class="nav-link px-lg-3 py-3 py-lg-4" href="/contact">
                                 <i class="bi bi-headset"></i> Contact
                             </a>
                         </li>
+
+                        <!-- Admin (for admin) -->
+                        <li class="nav-item" th:if="${isAdmin}">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin">
+                                <i class="bi bi-shield-lock"></i> Admin Panel
+                            </a>
+                        </li>
+                                                
                     </ul>
                     
                 </div>

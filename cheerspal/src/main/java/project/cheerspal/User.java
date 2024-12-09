@@ -38,6 +38,10 @@ public class User {
     
     private Set<Event> events = new HashSet<>();
 
+    public User() {
+        this.role = "USER";
+    }
+
     public Set<Event> getEvents() {
         return events;
     }

@@ -1,5 +1,6 @@
 package project.cheerspal.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import project.cheerspal.service.EventService;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import project.cheerspal.User;
 
 @Controller
 @RequestMapping("/post_event")
@@ -35,11 +37,16 @@ public class EventController {
     }
     
     @GetMapping("/event_details")
-    public String showEventDetails(@RequestParam("id") Long eventId, Model model) {
+    public String showEventDetails(@RequestParam("id") Long eventId, HttpSession session, Model model) {
         Event event = eventService.getEventById(eventId);
         model.addAttribute("event", event);
+        model.addAttribute("participants", event.getParticipants());
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            model.addAttribute("userId", loggedInUser.getId());
+        }
         return "event_details";
-    }
+    }   
 
     @GetMapping("/Index")
     public String showEvents(Model model) {
@@ -54,4 +61,15 @@ public class EventController {
         return "redirect:/admin";
     }
     
+    @PostMapping("/{id}/join")
+    public String joinEvent(@PathVariable("id") Long eventId, @RequestParam(value = "userId", required = false) Integer userId, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        userId = loggedInUser.getId();
+        eventService.addParticipantToEvent(eventId, userId);
+        model.addAttribute("successMessage", "You join the event successfully！");
+        return "redirect:/post_event/event_details?id=" + eventId;
+    }
 }

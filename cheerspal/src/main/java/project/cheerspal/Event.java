@@ -4,11 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,19 +24,29 @@ public class Event {
     private String weather;
     
     @ManyToOne
+    @JoinColumn(name = "host_id")
     private User host;
 
     @ManyToMany(mappedBy = "events")
-    private Set<User> attendees = new HashSet<>();
-
-    public Set<User> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(Set<User> attendees) {
-        this.attendees = attendees;
-    }
+    private Set<User> participants = new HashSet<>();
     
+    public Set<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<User> participants) {
+        this.participants = participants;
+    }
+
+    public void addParticipant(User user) {
+        this.participants.add(user);
+        user.getEvents().add(this);
+    }
+
+    public void removeParticipant(User user) {
+        this.participants.remove(user);
+    }
+        
     public String getWeather() {
         return weather;
     }

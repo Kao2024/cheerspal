@@ -98,6 +98,7 @@
                 <div class="card mb-5">
                     <div class="card-body">
                         <h1 class="card-title" th:text="${event.title}">Event Title</h1>
+                        <input type="hidden" name="userId" th:value="${userId}">
                         <p class="card-text">
                             <strong>Description:</strong> 
                             <span th:text="${event.description}">Event description goes here.</span>
@@ -114,12 +115,19 @@
                             <strong>Weather Forecast:</strong> 
                             <span th:text="${event.weather != null ? event.weather : 'Not available'}">Weather info</span>
                         </p>
+                        <li th:each="participant : ${event.participants}">
+                            <span th:text="${participant.name}"></span>
+                        </li>
 
                         <!-- Join Event Button -->
                         <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
                             <input type="hidden" name="userId" th:value="${userId}">
-                            <button type="submit" class="btn btn-primary">Join Event</button> <!-- Changed to btn-primary -->
+                            <button type="submit" class="btn btn-primary">Join Event</button>
                         </form>
+                        
+                        <div th:if="${successMessage}" style="color: green;">
+                            <p th:text="${successMessage}"></p>
+                        </div>
                     </div>
                 </div>
                 </div>
