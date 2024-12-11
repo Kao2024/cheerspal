@@ -48,10 +48,16 @@
                             </a>
                         </li>
 
-                        <!-- Sign Up (always visible) -->
-                        <li class="nav-item">
+                         <!-- Sign Up link (visible when not logged in) -->
+                        <li class="nav-item" th:unless="${session.loggedIn}">
                             <a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
                                 <i class="bi bi-person-fill-add"></i> Sign Up
+                            </a>
+                        </li>
+                        <!-- My Profile link (visible when logged in) -->
+                        <li class="nav-item" th:if="${session.loggedIn}">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/user_details/{id}(id=${user.id})}">
+                                <i class="bi bi-person-fill"></i> My Profile
                             </a>
                         </li>
                     </ul>

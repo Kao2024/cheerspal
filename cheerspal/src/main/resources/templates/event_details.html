@@ -24,7 +24,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="Index">Cheers Pal</a>
+                <a class="navbar-brand" href="/">Cheers Pal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -44,10 +44,17 @@
                                 <i class="bi bi-box-arrow-in-right"></i> Log in
                             </a>
                         </li>
-                        <!-- Sign Up (always visible) -->
-                        <li class="nav-item">
+                        <!-- Sign Up link (visible when not logged in) -->
+                        <li class="nav-item" th:unless="${session.loggedIn}">
                             <a class="nav-link px-lg-3 py-3 py-lg-4" href="/register">
                                 <i class="bi bi-person-fill-add"></i> Sign Up
+                            </a>
+                        </li>
+                        <!-- My Profile link (visible when logged in) -->
+                        <li class="nav-item" th:if="${session.loggedInUser != null}">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" 
+                               th:href="@{/user_details/{id}(id=${session.loggedInUser.id})}">
+                                <i class="bi bi-person-fill"></i> My Profile
                             </a>
                         </li>
                         <!-- Post Event (redirect to login when logged out) -->
@@ -125,10 +132,13 @@
                             <!-- Participants List -->
                             <div class="card-text mb-4">
                                 <strong>Participants:</strong>
-                                <span th:if="${event.participants != null and !event.participants.isEmpty()}" 
-                                      th:each="participant, iterStat : ${event.participants}" 
-                                      th:text="${participant.name + (iterStat.last ? '' : ', ')}">Participant Name</span>
-                                <span th:if="${event.participants == null or event.participants.isEmpty()}">No participants yet</span>
+                                <span th:if="${#lists.size(event.participants) > 0}">
+                                    <a th:each="participant, iterStat : ${event.participants}" 
+                                       th:href="@{/user_details/{id}(id=${participant.id})}" 
+                                       th:text="${participant.name}">Participant Name</a>
+                                    <span th:if="${iterStat != null and !iterStat.last}">, </span>
+                                </span>
+                                <span th:if="${#lists.size(event.participants) == 0}">No participants yet</span>
                             </div>
                             <!-- Join Event Button -->
                             <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
@@ -139,6 +149,10 @@
                             <!-- Success Message -->
                             <div th:if="${successMessage}" class="alert alert-success mt-4">
                                 <p th:text="${successMessage}"></p>
+                            </div>
+                            <!-- Error Message -->
+                            <div th:if="${errorMessage}" class="alert alert-danger mt-4">
+                                <p th:text="${errorMessage}"></p>
                             </div>
                         </div>
                     </div>

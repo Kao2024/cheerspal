@@ -1,5 +1,6 @@
 package project.cheerspal.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,6 +57,31 @@ public class UserController {
         }
         model.addAttribute("user", user);
         return "user_details";
+    }
+    
+    @GetMapping("/profile/{id}")
+    public String showUserProfile(@PathVariable Integer id, Model model) {
+        User user = userService.findById(id);
+        if (user == null) {
+            model.addAttribute("error", "User not found");
+            return "error";
+        }
+        model.addAttribute("user", user);
+        return "profile";
+    }
+    
+    @PostMapping("/profile/update/{id}")
+    public String updateProfile(@PathVariable Integer id, @ModelAttribute("user") User updatedUser, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null || !loggedInUser.getId().equals(id)) {
+            return "redirect:/login";
+        }
+
+        updatedUser.setId(id);
+        userService.updateUser(updatedUser);
+        session.setAttribute("loggedInUser", updatedUser);
+        model.addAttribute("successMessage", "Profile updated successfully!");
+        return "redirect:/user_details/" + id;
     }
 
 }

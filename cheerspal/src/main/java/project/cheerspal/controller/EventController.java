@@ -1,6 +1,7 @@
 package project.cheerspal.controller;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +41,12 @@ public class EventController {
     @GetMapping("/event_details")
     public String showEventDetails(@RequestParam("id") Long eventId, HttpSession session, Model model) {
         Event event = eventService.getEventById(eventId);
+        List<User> participants = event.getParticipants();
+        if (participants == null) {
+            participants = new ArrayList<>();
+        }
         model.addAttribute("event", event);
-        model.addAttribute("participants", event.getParticipants());
+        model.addAttribute("participants", participants);
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             model.addAttribute("userId", loggedInUser.getId());
@@ -68,11 +73,17 @@ public class EventController {
         if (loggedInUser == null) {
             return "redirect:/login";
         }
-        userId = loggedInUser.getId();
-        eventService.addParticipantToEvent(eventId, userId);
-        redirectAttributes.addFlashAttribute("successMessage", "You join the event successfully!");
+        try {
+            eventService.addParticipantToEvent(eventId, loggedInUser.getId());
+            redirectAttributes.addFlashAttribute("successMessage", "You joined the event successfully!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        
         return "redirect:/post_event/event_details?id=" + eventId;
     }
+    
+    
     @PostMapping("/{id}/report")
     public String reportEvent(@PathVariable("id") Long eventId, HttpSession session, RedirectAttributes redirectAttributes) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");

@@ -19,6 +19,7 @@ public class GlobalControllerAdvice {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             model.addAttribute("user", loggedInUser);
+            model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("isAdmin", "ADMIN".equals(loggedInUser.getRole()));
         } else {
             model.addAttribute("isAdmin", false);

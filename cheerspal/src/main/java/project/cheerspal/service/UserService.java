@@ -34,4 +34,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
     
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
 }

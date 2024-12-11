@@ -8,7 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,8 +31,8 @@ public class Event {
     private User host;
 
     @ManyToMany(mappedBy = "events")
-    private Set<User> participants = new HashSet<>();
-
+    private List<User> participants = new ArrayList<>();
+    
     public boolean isReported() {
         return reported;
     }
@@ -38,12 +40,12 @@ public class Event {
     public void setReported(boolean reported) {
         this.reported = reported;
     }
-    
-    public Set<User> getParticipants() {
+
+    public List<User> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(Set<User> participants) {
+    public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
 

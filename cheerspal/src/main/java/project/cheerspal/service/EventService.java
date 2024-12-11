@@ -52,14 +52,17 @@ public class EventService {
     }
 
     public void addParticipantToEvent(Long eventId, Integer userId) {
-       Event event = eventRepository.findById(eventId)
+        Event event = eventRepository.findById(eventId)
                .orElseThrow(() -> new RuntimeException("Event not found"));
 
-       User user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                .orElseThrow(() -> new RuntimeException("User not found"));
-
-       event.addParticipant(user);
-       eventRepository.save(event);
+        
+        if (event.getHost() != null && event.getHost().getId().equals(userId)) {
+            throw new RuntimeException("Host cannot join their own event");
+        }
+        event.addParticipant(user);
+        eventRepository.save(event);
    } 
     
     public void saveEvent(Event event) {
