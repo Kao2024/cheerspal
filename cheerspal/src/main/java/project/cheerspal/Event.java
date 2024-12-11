@@ -33,6 +33,16 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private List<User> participants = new ArrayList<>();
     
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    
     public boolean isReported() {
         return reported;
     }
@@ -54,10 +64,10 @@ public class Event {
         user.getEvents().add(this);
     }
 
-    public void removeParticipant(User user) {
+    public void removeParticipant(User user) {    
         this.participants.remove(user);
-    }
-        
+        user.getEvents().remove(this);
+    }  
     public String getWeather() {
         return weather;
     }

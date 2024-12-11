@@ -21,6 +21,9 @@ public class EventService {
     
     @Autowired
     private WeatherService weatherService;
+    
+    @Autowired
+    private PicService picService;
 
     public Event createEvent(Event event, Integer userId) {
         User host = userRepository.findById(userId)
@@ -33,6 +36,9 @@ public class EventService {
             throw new RuntimeException("Weather service returned null");
         }
         event.setWeather(weather);
+        
+        String imageUrl = picService.getRandomImageUrl(event.getCity());
+        event.setImageUrl(imageUrl);
 
         return eventRepository.save(event); 
     }
@@ -48,7 +54,13 @@ public class EventService {
     }
 
     public void deleteEvent(Long id) {
-        eventRepository.deleteById(id);
+        Event event = eventRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        for (User participant : event.getParticipants()) {
+            event.removeParticipant(participant);
+        }       
+        eventRepository.deleteById(id);        
     }
 
     public void addParticipantToEvent(Long eventId, Integer userId) {

@@ -109,7 +109,8 @@
                                 <form th:action="@{/post_event/{id}/report(id=${event.id})}" method="post">
                                     <button type="submit" class="btn btn-danger">Report Event</button>
                                 </form>
-                            </div>
+                            </div><br>
+                            <img th:src="${event.imageUrl}" alt="Event Image" class="card-img-top" />
                             <p class="card-text">
                                 <strong>Description:</strong> 
                                 <span th:text="${event.description}">Event description goes here.</span>
