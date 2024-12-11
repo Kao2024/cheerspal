@@ -13,19 +13,19 @@ import project.cheerspal.service.UserService;
  */
 
 @Controller
-@RequestMapping(path = "/register")
+@RequestMapping
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public String processRegistration(@ModelAttribute("user") User user, Model model) {
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
             return "register_problem";
@@ -46,5 +46,17 @@ public class UserController {
     public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
     }
+    
+    @GetMapping("/user_details/{id}")
+    public String showUserDetails(@PathVariable Integer id, Model model) {
+        User user = userService.findById(id);
+        if (user == null) {
+            model.addAttribute("error", "User not found");
+            return "error";
+        }
+        model.addAttribute("user", user);
+        return "user_details";
+    }
+
 }
 

@@ -22,6 +22,7 @@ public class Event {
     private LocalDate date;
     private String city;
     private String weather;
+    private boolean reported;
     
     @ManyToOne
     @JoinColumn(name = "host_id")
@@ -29,6 +30,14 @@ public class Event {
 
     @ManyToMany(mappedBy = "events")
     private Set<User> participants = new HashSet<>();
+
+    public boolean isReported() {
+        return reported;
+    }
+
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
     
     public Set<User> getParticipants() {
         return participants;

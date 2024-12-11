@@ -61,5 +61,15 @@ public class EventService {
        event.addParticipant(user);
        eventRepository.save(event);
    } 
-
+    
+    public void saveEvent(Event event) {
+        eventRepository.save(event);
+    }
+    
+    public List<Event> getAllReportedEvents() {
+        return eventRepository.findAllByReportedTrue();
+    }
+    
+    
+    
 }

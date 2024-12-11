@@ -30,4 +30,8 @@ public class UserService {
         return userRepository.findByRole(role);
     }
     
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
+    
 }

@@ -36,6 +36,8 @@ public class AdminController {
         model.addAttribute("users", users);
         Iterable<Event> events = eventService.getAllEvents();
         model.addAttribute("events", events);
+        List<Event> reportedEvents = eventService.getAllReportedEvents();
+        model.addAttribute("reportedEvents", reportedEvents);
         Iterable<Contact> contacts = contactService.getAllContacts();
         model.addAttribute("contacts", contactService.getAllContacts());
         return "admin";

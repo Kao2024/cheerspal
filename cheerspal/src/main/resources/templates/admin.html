@@ -113,6 +113,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>Status</th> <!-- Added status column for reported events -->
                             <th>Event Title</th>
                             <th>Event Description</th>
                             <th>Date</th>
@@ -121,8 +122,12 @@
                     </thead>
                     <tbody>
                         <tr th:each="event : ${events}">
+                            <td>
+                                <span th:class="${event.reported ? 'text-danger' : 'text-success'}" 
+                                      th:text="${event.reported ? 'Reported' : 'Active'}"></span>
+                            </td>
                             <td th:text="${event.title}"></td>
-                            <td style="max-width: 300px;" th:text="${event.description}"></td>
+                            <td style="max-width: 200px;" th:text="${event.description}"></td>
                             <td th:text="${event.date}"></td>
                             <td>
                                 <a href="#" th:href="@{/post_event/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>

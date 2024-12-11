@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByOrderByDateAsc();
+    List<Event> findAllByReportedTrue();
 }

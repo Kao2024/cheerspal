@@ -14,6 +14,7 @@ import project.cheerspal.service.EventService;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.cheerspal.User;
 
 @Controller
@@ -62,14 +63,31 @@ public class EventController {
     }
     
     @PostMapping("/{id}/join")
-    public String joinEvent(@PathVariable("id") Long eventId, @RequestParam(value = "userId", required = false) Integer userId, HttpSession session, Model model) {
+    public String joinEvent(@PathVariable("id") Long eventId, @RequestParam(value = "userId", required = false) Integer userId, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
         userId = loggedInUser.getId();
         eventService.addParticipantToEvent(eventId, userId);
-        model.addAttribute("successMessage", "You join the event successfully！");
+        redirectAttributes.addFlashAttribute("successMessage", "You join the event successfully!");
+        return "redirect:/post_event/event_details?id=" + eventId;
+    }
+    @PostMapping("/{id}/report")
+    public String reportEvent(@PathVariable("id") Long eventId, HttpSession session, RedirectAttributes redirectAttributes) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        Event event = eventService.getEventById(eventId);
+        if (event != null) {
+            event.setReported(true);
+            eventService.saveEvent(event);
+            redirectAttributes.addFlashAttribute("successMessage", "Event reported successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Event not found!");
+        }
         return "redirect:/post_event/event_details?id=" + eventId;
     }
 }
