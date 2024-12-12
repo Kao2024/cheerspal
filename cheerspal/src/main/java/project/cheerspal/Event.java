@@ -1,17 +1,8 @@
 package project.cheerspal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Event {
@@ -34,11 +25,28 @@ public class Event {
     private List<User> participants = new ArrayList<>();
     
     private String imageUrl;
+    
+    @OneToMany(mappedBy = "event")
+    private List<Feedback> feedbacks = new ArrayList<>();
+    
+    public void addFeedback(Feedback feedback) {
+        if (this.feedbacks == null) {
+            this.feedbacks = new ArrayList<>();
+        }
+        this.feedbacks.add(feedback);
+    }
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
 
+    public void setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+    
     public String getImageUrl() {
         return imageUrl;
     }
-
+    
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
@@ -67,7 +75,8 @@ public class Event {
     public void removeParticipant(User user) {    
         this.participants.remove(user);
         user.getEvents().remove(this);
-    }  
+    } 
+    
     public String getWeather() {
         return weather;
     }

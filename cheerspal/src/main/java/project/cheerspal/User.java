@@ -1,16 +1,8 @@
 package project.cheerspal;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class User {
@@ -24,8 +16,10 @@ public class User {
     private String email;
     private LocalDate birthday;
     private String role;
+    
     @Column(name = "terms")
     private boolean terms;
+    
     @Column(name = "self_introduction")
     private String selfIntroduction;
 
@@ -35,9 +29,11 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "event_id")
     )
-    
     private Set<Event> events = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Feedback> feedbacks = new HashSet<>();
+   
     public User() {
         this.role = "USER";
     }
@@ -48,6 +44,14 @@ public class User {
 
     public void setEvents(Set<Event> events) {
         this.events = events;
+    }
+
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(Set<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
     }
 
     public Integer getId() {

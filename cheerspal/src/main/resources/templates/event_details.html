@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -104,27 +104,47 @@
                     <!-- Event Details Card -->
                     <div class="card mb-5">
                         <div class="card-body">
+                            <!-- Event Title -->
                             <h1 class="card-title" th:text="${event.title}">Event Title</h1>
+
+                            <!-- Report Event Button -->
                             <div class="text-end">
                                 <form th:action="@{/post_event/{id}/report(id=${event.id})}" method="post">
                                     <button type="submit" class="btn btn-danger">Report Event</button>
                                 </form>
-                            </div><br>
-                            <img th:src="${event.imageUrl}" alt="Event Image" class="card-img-top" />
+                            </div>
+
+                            <br>
+
+                            <!-- Event Image -->
+                             <div class="event-image mb-4 text-center">
+                                <img th:src="${event.imageUrl}" alt="Event Image" class="img-fluid centered-image" />
+                            </div>
+
+                            <!-- Event Description -->
                             <p class="card-text">
                                 <strong>Description:</strong> 
-                                <span th:text="${event.description}">Event description goes here.</span>
+                                <span th:text="${event.description}"></span>
                             </p>
+
+                            <!-- Hosted By -->
                             <p class="card-text">
                                 <strong>Hosted by:</strong> 
-                                    <a th:if="${event.host != null}" th:href="@{/user_details/{id}(id=${event.host.id})}" th:text="${event.host.name}">Host name</a>
-                                    <span th:if="${event.host == null}">Unknown</span>
+                                <a th:if="${event.host != null}" th:href="@{/user_details/{id}(id=${event.host.id})}" th:text="${event.host.name}">Host name</a>
+                                <span th:if="${event.host == null}"></span>
                             </p>
-                                
+
+                            <!-- Event Date -->
                             <p class="card-text">
-                                <strong>Event Time:</strong> 
-                                <span th:text="${event.date}">Event time goes here</span>
+                                <strong>Event Date:</strong> 
+                                <span th:text="${event.date}"></span>
                             </p>
+                            <!-- Display the city -->
+                            <p>
+                                <strong>City:</strong>
+                                <span th:text="${event.city}"></span>
+                            </p>
+                            <!-- Weather Forecast -->
                             <p class="card-text">
                                 <strong>Weather Forecast:</strong> 
                                 <span th:text="${event.weather != null ? event.weather : 'Not available'}">Weather info</span>
@@ -134,32 +154,63 @@
                             <div class="card-text mb-4">
                                 <strong>Participants:</strong>
                                 <span th:if="${#lists.size(event.participants) > 0}">
-                                    <a th:each="participant, iterStat : ${event.participants}" 
-                                       th:href="@{/user_details/{id}(id=${participant.id})}" 
-                                       th:text="${participant.name}">Participant Name</a>
-                                    <span th:if="${iterStat != null and !iterStat.last}">, </span>
+                                    <span th:each="participant, iterStat : ${event.participants}">
+                                        <a th:href="@{/user_details/{id}(id=${participant.id})}" 
+                                           th:text="${participant.name}">Participant Name</a>
+                                        <span th:if="${!iterStat.last}">, </span> <!-- Add comma if not last participant -->
+                                    </span>
                                 </span>
                                 <span th:if="${#lists.size(event.participants) == 0}">No participants yet</span>
                             </div>
+                            
                             <!-- Join Event Button -->
                             <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
                                 <input type="hidden" name="userId" th:value="${userId}">
-                                <button type="submit" class="btn btn-primary">Join Event</button>
+                                <button type="submit" class="btn btn-primary text-uppercase">Join Event</button>
                             </form>
 
                             <!-- Success Message -->
                             <div th:if="${successMessage}" class="alert alert-success mt-4">
                                 <p th:text="${successMessage}"></p>
                             </div>
+
                             <!-- Error Message -->
                             <div th:if="${errorMessage}" class="alert alert-danger mt-4">
                                 <p th:text="${errorMessage}"></p>
                             </div>
+
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+
+                    <!-- Feedback Section -->
+                    <h3 class="mt-4">Feedback:</h3>
+                    <div class="feedback-container">
+                        <div th:if="${#lists.size(event.feedbacks) > 0}">
+                            <div th:each="feedback : ${event.feedbacks}" class="feedback-item">
+                                <!-- User Name -->
+                                <div class="feedback-user">
+                                    <strong class="post-meta" th:text="${feedback.user.name}"></strong >
+                                </div>
+
+                                <!-- Feedback Text -->
+                                <div class="feedback-text">
+                                    <p th:text="${feedback.feedbackText}"></p>
+                                </div>
+                                <hr class="feedback-separator"/>
+                            </div>
+                        </div>
+
+                        <!-- If no feedback -->
+                        <div th:if="${#lists.size(event.feedbacks) == 0}">
+                            <p>No feedback yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Button -->
+                    <div class="text-end mt-4">
+                        <a href="/post_event/feedback/{id}" th:href="@{/post_event/feedback/{id}(id=${event.id})}" class="btn btn-secondary">Give Feedback</a>
+                    </div><br>
+
         <!-- Footer-->
         <footer class="border-top">
             <div class="container px-4 px-lg-5">

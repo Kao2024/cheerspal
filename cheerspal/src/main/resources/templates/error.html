@@ -2,7 +2,14 @@
 <html>
     <head><title>Error</title></head>
     <body>
-        <h1>Error occurred: ${errorMessage}</h1>
-        <p>Details: ${errorDetails}</p>
+    
+        <h1>An Error Occurred</h1>
+        <p>Error Message: <span th:text="${errorMessage}">Default error message</span></p>
+        <p>Error Details: <span th:text="${errorDetails}">Default error details</span></p>
+
+        <pre th:text="${stackTrace}"></pre>
+
+        <a href="/" >Back to Home</a>
+
     </body>
 </html>

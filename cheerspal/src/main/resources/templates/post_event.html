@@ -106,29 +106,37 @@
                     <!-- Create Event Form -->
                     <div class="post-preview">
                         <h2 class="post-title">Create an Event</h2>
-                        <form th:action="@{/post_event}" method="post" th:object="${event}">
-                            <input type="hidden" name="userId" th:value="${session.loggedInUser.id}">
-                            
+                        <form th:action="@{/post_event}" method="post" th:object="${event}" id="createEventForm" onsubmit="return validateForm();">
+                            <input type="hidden" name="userId" th:value="${session.loggedInUser.id}">    
+                            <!-- Event Title -->
                             <div class="form-floating mb-3">
+                                <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter event title" required>
                                 <label for="title">Event Title</label>
-                                <input type="text" id="title" th:field="*{title}" class="form-control" required>
+                                <div class="invalid-feedback">Event Title is required.</div>
                             </div>
 
+                            <!-- Event Description -->
                             <div class="form-floating mb-3">
+                                <textarea id="description" th:field="*{description}" class="form-control" style="height: 12rem" placeholder="Enter event description" required></textarea>
                                 <label for="description">Event Description</label>
-                                <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+                                <div class="invalid-feedback">Event Description is required.</div>
                             </div>
-
+                            
+                            <!-- Event Date -->
                             <div class="form-floating mb-3">
-                                <label for="date">Event Date</label>
                                 <input type="date" id="date" th:field="*{date}" class="form-control" required>
+                                <label for="date">Event Date</label>
+                                <div class="invalid-feedback">Event Date is required.</div>
                             </div>
 
+                            <!-- City -->
                             <div class="form-floating mb-3">
+                                <input type="text" id="city" name="city" th:field="*{city}" class="form-control" placeholder="Enter event city" required>
                                 <label for="city">City</label>
-                                <input type="text" id="city" name="city" placeholder="City" class="form-control" required>
+                                <div class="invalid-feedback">City is required.</div>
                             </div>
 
+                            <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary text-uppercase">Post Event</button>
                         </form>
                     </div>

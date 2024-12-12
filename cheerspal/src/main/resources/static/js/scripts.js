@@ -58,7 +58,13 @@ function validateForm() {
         message.classList.add('is-invalid');
         valid = false;
     }
-
+    
+    document.querySelectorAll('.form-control').forEach((input) => {
+        input.addEventListener('input', () => {
+            input.classList.remove('is-invalid');
+        });
+    });
+    
     return valid;
 }
 

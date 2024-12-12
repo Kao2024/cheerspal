@@ -1,5 +1,6 @@
 package project.cheerspal.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -11,14 +12,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class PicService {
-    private static final String API_URL = "https://api.unsplash.com/photos/random";
-    private static final String API_KEY = "_5DAvLdkO1bqeSYbN37gVTv8b1kobBcaqnZ6a-rACEM";
+    @Value("${unsplash.api.url}")
+    private String apiUrl;
+
+    @Value("${unsplash.api.key}")
+    private String apiKey;
 
     public String getRandomImageUrl(String query) {
         RestTemplate restTemplate = new RestTemplate();        
-        String url = UriComponentsBuilder.fromHttpUrl(API_URL)
+        String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("query", query)
-                .queryParam("client_id", API_KEY)
+                .queryParam("client_id", apiKey)
                 .queryParam("count", 1)
                 .toUriString();
 

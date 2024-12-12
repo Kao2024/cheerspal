@@ -1,14 +1,15 @@
 package project.cheerspal.service;
 
-import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.cheerspal.Event;
-import project.cheerspal.EventRepository;
-
-import java.util.List;
 import project.cheerspal.User;
 import project.cheerspal.UserRepository;
+import project.cheerspal.Event;
+import project.cheerspal.EventRepository;
+import java.util.*;
+import org.springframework.transaction.annotation.Transactional;
+import project.cheerspal.Feedback;
+import project.cheerspal.FeedbackRepository;
 
 @Service
 public class EventService {
@@ -18,6 +19,9 @@ public class EventService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private FeedbackRepository feedbackRepository;
     
     @Autowired
     private WeatherService weatherService;
@@ -53,14 +57,16 @@ public class EventService {
         return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found")); 
     }
 
+    @Transactional
     public void deleteEvent(Long id) {
         Event event = eventRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Event not found"));
 
         for (User participant : event.getParticipants()) {
-            event.removeParticipant(participant);
-        }       
-        eventRepository.deleteById(id);        
+            participant.getEvents().remove(event);
+        }
+
+        eventRepository.deleteById(id);
     }
 
     public void addParticipantToEvent(Long eventId, Integer userId) {
@@ -75,8 +81,8 @@ public class EventService {
         }
         event.addParticipant(user);
         eventRepository.save(event);
-   } 
-    
+   }
+        
     public void saveEvent(Event event) {
         eventRepository.save(event);
     }
@@ -85,6 +91,8 @@ public class EventService {
         return eventRepository.findAllByReportedTrue();
     }
     
-    
-    
+    public void saveFeedback(Feedback feedback) {
+        feedbackRepository.save(feedback);
+    }
+   
 }
