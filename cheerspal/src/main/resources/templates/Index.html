@@ -25,7 +25,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="Index">Cheers Pal</a>
+                <a class="navbar-brand" href="/">Cheers Pal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -82,13 +82,9 @@
                             <a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin">
                                 <i class="bi bi-shield-lock"></i> Admin Panel
                             </a>
-                        </li>
-                                                
-                    </ul>
-                    
-                </div>
-                
-                
+                        </li>                                                
+                    </ul>                   
+                </div>                
             </div>
         </nav>
         <!-- Page Header-->
@@ -119,7 +115,7 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-md-12 col-lg-10 col-xl-9">                
                     <!-- Post preview-->
-                    <h1 class="mb-4">Upcoming Events</h1>
+                    <h1 class="mb-4">Events</h1>
                         <div th:if="${events != null}">
                             <div th:each="event : ${events}">
                                 <div class="post-preview d-flex align-items-center">
@@ -134,7 +130,7 @@
                                             <h5 class="post-subtitle" th:text="${event.description}">Event Description</h5>
                                         </a>
                                         <p class="post-meta">
-                                            Scheduled on
+                                            Date
                                             <span th:text="${event.date}">Event Date</span>
                                         </p>
                                     </div>
@@ -144,7 +140,7 @@
                         </div>
 
                     <div th:if="${events == null}">
-                        <p>No upcoming events found.</p>
+                        <p>No events found.</p>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />

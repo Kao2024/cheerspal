@@ -163,8 +163,8 @@
                                 <span th:if="${#lists.size(event.participants) == 0}">No participants yet</span>
                             </div>
                             
-                            <!-- Join Event Button -->
-                            <form th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
+                           <!-- Join Event Button -->
+                            <form th:if="${event.date.isAfter(T(java.time.LocalDate).now())}" th:action="@{/post_event/{id}/join(id=${event.id})}" method="post">
                                 <input type="hidden" name="userId" th:value="${userId}">
                                 <button type="submit" class="btn btn-primary text-uppercase">Join Event</button>
                             </form>
@@ -183,33 +183,35 @@
                     </div>
 
                     <!-- Feedback Section -->
-                    <h3 class="mt-4">Feedback:</h3>
-                    <div class="feedback-container">
-                        <div th:if="${#lists.size(event.feedbacks) > 0}">
-                            <div th:each="feedback : ${event.feedbacks}" class="feedback-item">
-                                <!-- User Name -->
-                                <div class="feedback-user">
-                                    <strong class="post-meta" th:text="${feedback.user.name}"></strong >
-                                </div>
+                    <div th:if="${event.date.isBefore(T(java.time.LocalDate).now())}">
+                        <h3 class="mt-4">Feedback:</h3>
+                        <div class="feedback-container">
+                            <div th:if="${#lists.size(event.feedbacks) > 0}">
+                                <div th:each="feedback : ${event.feedbacks}" class="feedback-item">
+                                    <!-- User Name -->
+                                    <div class="feedback-user">
+                                        <strong class="post-meta" th:text="${feedback.user.name}"></strong>
+                                    </div>
 
-                                <!-- Feedback Text -->
-                                <div class="feedback-text">
-                                    <p th:text="${feedback.feedbackText}"></p>
+                                    <!-- Feedback Text -->
+                                    <div class="feedback-text">
+                                        <p th:text="${feedback.feedbackText}"></p>
+                                    </div>
+                                    <hr class="feedback-separator"/>
                                 </div>
-                                <hr class="feedback-separator"/>
+                            </div>
+
+                            <!-- If no feedback -->
+                            <div th:if="${#lists.size(event.feedbacks) == 0}">
+                                <p>No feedback yet.</p>
                             </div>
                         </div>
 
-                        <!-- If no feedback -->
-                        <div th:if="${#lists.size(event.feedbacks) == 0}">
-                            <p>No feedback yet.</p>
-                        </div>
+                        <!-- Feedback Button -->
+                        <div class="text-end mt-4">
+                            <a href="/post_event/feedback/{id}" th:href="@{/post_event/feedback/{id}(id=${event.id})}" class="btn btn-secondary">Give Feedback</a>
+                        </div><br>
                     </div>
-
-                    <!-- Feedback Button -->
-                    <div class="text-end mt-4">
-                        <a href="/post_event/feedback/{id}" th:href="@{/post_event/feedback/{id}(id=${event.id})}" class="btn btn-secondary">Give Feedback</a>
-                    </div><br>
 
         <!-- Footer-->
         <footer class="border-top">
